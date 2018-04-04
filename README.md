@@ -2,6 +2,17 @@
 华南理工大学毕业设计：
 - 爬取soscholar学者、文章信息，并存储在数据库
 
+### step
+```
+读取姓名列表names
+for name in names:
+    get authors by search name:
+        for author in authors:
+            调用soscholar接口获取Author信息并存储到数据库
+            获取author的合作者：调用soscholar接口获取合作者信息并存储到数据库
+            获取author的paper: 调用soscholar接口获取paper并存储到数据库
+```
+
 ### database
 sql
 ```
