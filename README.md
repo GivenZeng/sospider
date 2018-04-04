@@ -59,7 +59,7 @@ sql
 ### deploy
 - 首先：先创建数据库soscholar
 ```
-create database soscholar
+create database soscholar character set utf8
 ```
 
 - 修改配置文件，填入你的access_token和数据库信息
