@@ -36,6 +36,18 @@ def upsert_author(info):
 
 # 将paper存储到数据库
 def upsert_paper(info, author_id):
+    try:
+        with db_session:
+            publisher_id = info['publisher_id']
+            if publisher_id:
+                publisher = Publisher.get(publisher_id=publisher_id)
+                if publisher:
+                    pass
+                else:
+                    publisher = Publisher(publisher_id=publisher_id)
+                    publisher.name = info['publishername']
+    except:
+        pass
     with db_session:
         p = Paper.get(paper_id=info['paper_id'])
         if p:
@@ -47,15 +59,11 @@ def upsert_paper(info, author_id):
         paper.cite_num = info['cite_num']
         paper.cited_num = info['cited_num']
 
-        # publisher_id = info['publisher_id']
-        # if publisher_id:
-        #     publisher = Publisher.get(publisher_id=publisher_id)
-        #     if publisher:
-        #         paper.publisher = publisher
-        #     else:
-        #         publisher = Publisher(publisher_id=publisher_id)
-        #         publisher.name = info['publishername']
-        #         paper.publisher = publisher
+        publisher_id = info['publisher_id']
+        if publisher_id:
+            publisher = Publisher.get(publisher_id=publisher_id)
+            if publisher:
+                paper.publisher = publisher
 
         if author_id is None:
             return
