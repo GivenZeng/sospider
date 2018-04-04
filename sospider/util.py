@@ -68,3 +68,10 @@ def start_get_paper_thread(id, author_id):
             logger.debug('paper has existed, paper_id=%s', id)
             return
     executor.submit(get_paper,id,author_id)
+
+def has_get(author_id):
+    with db_session:
+        a= Author.get(author_id=author_id)
+        if a:
+            return True
+        return False

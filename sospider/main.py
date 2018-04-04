@@ -8,7 +8,7 @@ from util import get_names
 import api
 import db
 from log import  logger
-
+from models import Author
 
 def main():
     names = get_names()
@@ -23,10 +23,13 @@ def main():
                 if author['id'] in dealt_authors:
                     continue
                 dealt_authors[author['id']] = True
+                # 如果已经获取该author，就略过
+                if util.has_get(author['id']):
+                    logger.debug('author has get, author_id=%s',author['id'])
+                    continue
                 # 获取用户信息
                 info = api.get_author(author['id'])
                 db.upsert_author(info)
-
                 # 查询合作者的信息
                 for co in info['co-authors']:
                     if co['id'] in dealt_authors:
@@ -39,8 +42,8 @@ def main():
                         continue
                     dealt_paper[p['id']] = True
                     util.start_get_paper_thread(p['id'], author['id'])
-            except:
-                logger.debug('get error in a author query')
+            except Exception as e:
+                logger.debug('get error in a author query',e)
             # 每个author停止2s
             time.sleep(1)
         # 每个name停止10s
